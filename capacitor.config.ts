@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: '07_gestor_clases',
+  appName: 'Gestor de clases',
   webDir: 'www'
 };
 
