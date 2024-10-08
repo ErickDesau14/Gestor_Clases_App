@@ -1,0 +1,7 @@
+{
+  "name": "07_gestor_clases",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
