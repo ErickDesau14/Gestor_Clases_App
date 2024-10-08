@@ -19,7 +19,16 @@ export class ListStudentsComponent  implements OnInit {
     this.students = [];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getStudents();
+  }
+
+  getStudents() {
+    this.sqliteService.gettudents().then( (students: Student[]) => {
+      this.students = students;
+      console.log(this.students);
+    })
+  }
 
   onShowForm() {
     this.showForm = true;

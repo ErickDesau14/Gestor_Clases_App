@@ -18,7 +18,7 @@
 <ng-container *ngIf="data && data.length > 0">
   <ion-row *ngFor="let d of data">
     <ion-col>
-      <ng-template *ngTempleateOut="templateData; context: {
+      <ng-template *ngTempleateOutlet="templateData; context: {
     item: d}">
       </ng-template>
     </ion-col>
