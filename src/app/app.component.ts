@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {Platform} from "@ionic/angular";
 import {Device} from "@capacitor/device";
-import {SqliteManagerService} from "../../service/sqlite-manager.service";
+import {SqliteManagerService} from "./service/sqlite-manager.service";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +19,8 @@ export class AppComponent {
     private translate: TranslateService,
     private sqliteService: SqliteManagerService
   ) {
+    this.load = false;
+    this.isWeb = false;
     this.translate.setDefaultLang('es');
     this.initApp();
   }
