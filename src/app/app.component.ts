@@ -9,6 +9,9 @@ import {Device} from "@capacitor/device";
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
+  public isWeb: boolean;
+
   constructor(
     private platform: Platform,
     private translate: TranslateService
@@ -21,6 +24,9 @@ export class AppComponent {
     this.platform.ready().then( async () => {
 
       const language = await Device.getLanguageCode();
+      const  info = await Device.getInfo();
+
+      this.isWeb = info.platform === 'web';
 
       if (language.value) {
         this.translate.use(language.value.slice(0,2));
