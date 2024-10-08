@@ -14,14 +14,26 @@
             [data]="students"
             emptyText="label.no.students"
             addText="label.add.student"
-            (add)="onShowForm()"></app-list-data>
+            (add)="onShowForm()">
+
+            <ng-template #templateData let-item="item">
+
+              <ion-item>
+                <ion-label>
+                  {{item.name + ' ' + item.surname}}
+                </ion-label>
+              </ion-item>
+
+            </ng-template>
+
+          </app-list-data>
         </ion-col>
       </ion-row>
 
     </ion-col>
 
     <ion-col *ngIf="showForm">
-
+      <app-form-student [student]="studentSelected" (closeEvent)="onCloseForm()"></app-form-student>
     </ion-col>
   </ion-row>
 </ion-grid>

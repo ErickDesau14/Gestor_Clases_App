@@ -10,6 +10,7 @@ import {SqliteManagerService} from "../../../../../service/sqlite-manager.servic
 export class ListStudentsComponent  implements OnInit {
 
   public students: Student[];
+  public studentSelected: Student;
   public showForm: boolean;
 
   constructor(
@@ -17,6 +18,7 @@ export class ListStudentsComponent  implements OnInit {
   ) {
     this.showForm = false;
     this.students = [];
+    this.studentSelected = null;
   }
 
   ngOnInit() {
@@ -37,5 +39,9 @@ export class ListStudentsComponent  implements OnInit {
   filterList($event: any) {
     console.log($event.detail.valueO)
     this.getStudents($event.detail.value);
+  }
+
+  onCloseForm() {
+    this.showForm = false;
   }
 }

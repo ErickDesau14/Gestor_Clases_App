@@ -13,6 +13,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { defineCustomElements as jeepSqlite } from 'jeep-sqlite/loader'
 
+import { CommonModule } from '@angular/common';
+
 jeepSqlite(window);
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -25,6 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    CommonModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
