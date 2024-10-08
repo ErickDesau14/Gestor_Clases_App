@@ -95,8 +95,12 @@ export class SqliteManagerService {
     return this.dbName;
   }
 
-  async gettudents() {
+  async gettudents(search?: string) {
     let sql = 'SELECT * FROM students WHERE active = 1';
+
+    if (search) {
+      sql += ` and (upper(name) LIKE '%${search.toLocaleUpperCase()}%' or upper(surname) LIKE '%${search.toLocaleUpperCase()}%')`;
+    }
 
     const dbName = await this.getDbName();
     return CapacitorSQLite.query({

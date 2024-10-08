@@ -23,8 +23,8 @@ export class ListStudentsComponent  implements OnInit {
     this.getStudents();
   }
 
-  getStudents() {
-    this.sqliteService.gettudents().then( (students: Student[]) => {
+  getStudents(search?: string) {
+    this.sqliteService.gettudents(search).then( (students: Student[]) => {
       this.students = students;
       console.log(this.students);
     })
@@ -32,5 +32,10 @@ export class ListStudentsComponent  implements OnInit {
 
   onShowForm() {
     this.showForm = true;
+  }
+
+  filterList($event: any) {
+    console.log($event.detail.valueO)
+    this.getStudents($event.detail.value);
   }
 }
