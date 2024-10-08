@@ -36,4 +36,7 @@ export class FormStudentComponent  implements OnInit {
     this.closeEvent.emit(true);
   }
 
+  createUpdateStudent() {
+
+  }
 }
