@@ -8,6 +8,7 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
 import {ListClassesComponent} from "./components/list-classes/list-classes.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {ListDataComponent} from "../../../shared/list-data/list-data.component";
+import {FormClassesComponent} from "./components/form-classes/form-classes.component";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {ListDataComponent} from "../../../shared/list-data/list-data.component";
     FormsModule,
     Tab2PageRoutingModule,
     TranslateModule.forChild(),
-    ListDataComponent
+    ListDataComponent,
+    FormClassesComponent
   ],
   declarations: [Tab2Page, ListClassesComponent]
 })

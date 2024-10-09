@@ -11,6 +11,7 @@ import {Student} from "../../../../../models/student";
 export class ListClassesComponent  implements OnInit {
 
   public classes: Class[];
+  public classSelected: Class;
   public showForm: boolean;
 
   constructor(
@@ -18,6 +19,7 @@ export class ListClassesComponent  implements OnInit {
   ) {
     this.classes = [];
     this.showForm = false;
+    this.classSelected = null;
   }
 
   ngOnInit() {
@@ -49,5 +51,10 @@ export class ListClassesComponent  implements OnInit {
 
   onShowForm() {
     this.showForm = true;
+  }
+
+  onCloseForm() {
+    this.showForm = false;
+
   }
 }
