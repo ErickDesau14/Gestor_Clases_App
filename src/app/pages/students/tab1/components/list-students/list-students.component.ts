@@ -26,7 +26,7 @@ export class ListStudentsComponent  implements OnInit {
   }
 
   getStudents(search?: string) {
-    this.sqliteService.gettudents(search).then( (students: Student[]) => {
+    this.sqliteService.getStudents(search).then( (students: Student[]) => {
       this.students = students;
       console.log(this.students);
     })
@@ -43,5 +43,6 @@ export class ListStudentsComponent  implements OnInit {
 
   onCloseForm() {
     this.showForm = false;
+    this.getStudents();
   }
 }

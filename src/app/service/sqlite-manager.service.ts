@@ -1,11 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {CapacitorSQLite, capSQLiteResult, capSQLiteValues, JsonSQLite} from '@capacitor-community/sqlite';
+import {
+  CapacitorSQLite,
+  capSQLiteChanges,
+  capSQLiteValues,
+  JsonSQLite
+} from '@capacitor-community/sqlite';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import {Capacitor} from "@capacitor/core";
 import {Student} from "../models/student";
 
 @Injectable({
@@ -50,7 +54,7 @@ export class SqliteManagerService {
       await sqlite.initWebStore();
     }
 
-    this.setupDatabase();
+    await this.setupDatabase();
 
   }
 
@@ -95,7 +99,7 @@ export class SqliteManagerService {
     return this.dbName;
   }
 
-  async gettudents(search?: string) {
+  async getStudents(search?: string) {
     let sql = 'SELECT * FROM students WHERE active = 1';
 
     if (search) {
@@ -117,5 +121,28 @@ export class SqliteManagerService {
     }).catch(error => Promise.reject(error));
   }
 
+
+  async createStudent(student: Student) {
+    let sql = 'INSERT INTO students (name, surname, email, phone) VALUES (?,?,?,?)';
+
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [student.name, student.surname, student.email, student.phone]
+        }
+      ]
+    }).then( (change: capSQLiteChanges) => {
+      if(this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return change;
+    })
+
+  }
 
 }
