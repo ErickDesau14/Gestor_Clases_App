@@ -4,7 +4,22 @@
 
       <ion-row>
         <ion-col>
-          <app-list-data [data]="classes" emptyText="label.no.clases" addText="label.add.class" (add)="onShowForm()"></app-list-data>
+          <app-list-data [data]="classes" emptyText="label.no.clases" addText="label.add.class" (add)="onShowForm()">
+
+            <ng-template #templateData let-item="item">
+
+              <ion-item>
+                <ion-label class="ion-text-lg-wrap">
+                  {{ item.student?.name + ' ' + item.student?.surname }} -
+                  {{ (item.date_start | date: 'dd MMM YYYY HH:mm') }} -
+                  {{ item.date_end | date: 'HH:mm' }} -
+                  {{item.price + ' $'}}
+                </ion-label>
+              </ion-item>
+
+            </ng-template>
+
+          </app-list-data>
         </ion-col>
       </ion-row>
 
