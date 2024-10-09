@@ -38,6 +38,7 @@ export class FilterComponent  implements OnInit {
       component: FilterContentComponent,
       backdropDismiss: true,
       event,
+      cssClass: 'custom-popover-content',
       componentProps: {
         filter: this.filter
       }

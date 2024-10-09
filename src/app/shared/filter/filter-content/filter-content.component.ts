@@ -4,6 +4,8 @@ import {CommonModule} from "@angular/common";
 import {Filter} from "../../../models/filter";
 import {Student} from "../../../models/student";
 import {SqliteManagerService} from "../../../service/sqlite-manager.service";
+import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-filter-content',
@@ -12,7 +14,9 @@ import {SqliteManagerService} from "../../../service/sqlite-manager.service";
   standalone: true,
   imports: [
     IonicModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    TranslateModule
   ]
 })
 export class FilterContentComponent  implements OnInit {
@@ -34,6 +38,11 @@ export class FilterContentComponent  implements OnInit {
   }
 
 
+  filterData() {
 
+  }
 
+  reset() {
+
+  }
 }
