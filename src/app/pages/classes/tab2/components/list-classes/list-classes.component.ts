@@ -58,4 +58,12 @@ export class ListClassesComponent  implements OnInit {
     this.getClasses();
 
   }
+
+  updateClass(item: Class) {
+
+  }
+
+  deleteClassConfirm(item: Class) {
+
+  }
 }
