@@ -2,11 +2,21 @@ import {Component, EventEmitter, Input, OnInit, Output, output} from '@angular/c
 import {Class} from "../../../../../models/class";
 import {Student} from "../../../../../models/student";
 import {SqliteManagerService} from "../../../../../service/sqlite-manager.service";
+import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
+import {IonicModule} from "@ionic/angular";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-form-classes',
   templateUrl: './form-classes.component.html',
   styleUrls: ['./form-classes.component.scss'],
+  imports: [
+    FormsModule,
+    TranslateModule,
+    IonicModule,
+    NgForOf
+  ],
   standalone: true
 })
 export class FormClassesComponent  implements OnInit {
@@ -29,6 +39,7 @@ export class FormClassesComponent  implements OnInit {
 
     if (!this.classObj) {
       this.classObj = new Class();
+      this.classObj.price = 0;
     } else {
       this.update = true;
     }
@@ -43,4 +54,7 @@ export class FormClassesComponent  implements OnInit {
     this.closeEvent.emit(true);
   }
 
+  createUpdateClass() {
+
+  }
 }
