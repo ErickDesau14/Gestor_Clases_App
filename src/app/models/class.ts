@@ -1,3 +1,5 @@
+import {Student} from "./student";
+
 export class Class {
   id: number;
   date_start: string;
@@ -5,4 +7,5 @@ export class Class {
   id_student: number;
   price: number;
   active: number;
+  student?: Student;
 }

@@ -11,6 +11,7 @@ import { Preferences } from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import {Student} from "../models/student";
+import {Class} from "../models/class";
 
 @Injectable({
   providedIn: 'root'
@@ -189,4 +190,23 @@ export class SqliteManagerService {
     })
   }
 
+  async getClasses() {
+    let sql = 'SELECT * FROM class WHERE active = 1';
+
+    sql += ' ORDER BY date_start,date_end';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql,
+      values: []
+    }).then( (response: capSQLiteValues) => {
+      let classes: Class[] = [];
+      for (let index = 0; index < response.values.length; index++) {
+        const row = response.values[index];
+        const c: Class = row as Class;
+        classes.push(c);
+      }
+      return Promise.resolve(classes);
+    } ).catch(err => Promise.reject(err))
+  }
 }
