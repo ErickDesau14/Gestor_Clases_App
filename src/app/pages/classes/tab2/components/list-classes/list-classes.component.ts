@@ -55,6 +55,7 @@ export class ListClassesComponent  implements OnInit {
 
   onCloseForm() {
     this.showForm = false;
+    this.getClasses();
 
   }
 }

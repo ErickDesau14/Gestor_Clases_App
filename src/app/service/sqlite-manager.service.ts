@@ -209,4 +209,25 @@ export class SqliteManagerService {
       return Promise.resolve(classes);
     } ).catch(err => Promise.reject(err))
   }
+
+  async createClass(classObj: Class) {
+    let sql = 'INSERT INTO class (date_start, date_end, id_student, price) VALUES (?,?,?,?)';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [classObj.date_start, classObj.date_end, classObj.id_student, classObj.price]
+        }
+      ]
+    }).then( (change: capSQLiteChanges) => {
+      if(this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return change;
+    })
+  }
 }
