@@ -251,4 +251,27 @@ export class SqliteManagerService {
       return change;
     })
   }
+
+  async deleteClass(c: Class) {
+    let sql = 'UPDATE class SET active = 0 WHERE id=?';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [
+            c.id
+          ]
+        }
+      ]
+    }).then( (change: capSQLiteChanges) => {
+      if(this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return change;
+    })
+  }
 }
