@@ -56,11 +56,12 @@ export class ListClassesComponent  implements OnInit {
   onCloseForm() {
     this.showForm = false;
     this.getClasses();
-
+    this.classSelected = null;
   }
 
   updateClass(item: Class) {
-
+    this.classSelected = item;
+    this.showForm = true;
   }
 
   deleteClassConfirm(item: Class) {

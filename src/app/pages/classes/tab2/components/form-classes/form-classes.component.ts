@@ -65,7 +65,18 @@ export class FormClassesComponent  implements OnInit {
     this.classObj.date_end = moment(this.classObj.date_end).format('YYYY-MM-DDTHH:mm');
 
     if (this.update) {
-
+      this.sqliteService.updateClass(this.classObj).then( () => {
+        this.alertService.alertMessage(
+          this.translate.instant('label.success'),
+          this.translate.instant('label.success.message.edit.class')
+        );
+        this.closeForm();
+      }).catch(err => {
+        this.alertService.alertMessage(
+          this.translate.instant('label.error'),
+          this.translate.instant('label.error.message.edit.class')
+        )
+      });
     } else {
       this.sqliteService.createClass(this.classObj).then( () =>{
         this.alertService.alertMessage(
