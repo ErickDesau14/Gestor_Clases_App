@@ -43,11 +43,13 @@ export class ListStudentsComponent  implements OnInit {
 
   onCloseForm() {
     this.showForm = false;
+    this.studentSelected = null;
     this.getStudents();
   }
 
   updateStudent(item: Student) {
-
+    this.studentSelected = item;
+    this.showForm = true;
   }
 
   deleteStudentConfirm(item: Student) {

@@ -145,4 +145,26 @@ export class SqliteManagerService {
 
   }
 
+  async updateStudent(student: Student) {
+    let sql = 'UPDATE students SET name = ?, surname = ?, email = ?, phone = ? WHERE id = ?';
+
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [student.name, student.surname, student.email, student.phone, student.id]
+        }
+      ]
+    }).then( (change: capSQLiteChanges) => {
+      if(this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return change;
+    })
+  }
+
 }

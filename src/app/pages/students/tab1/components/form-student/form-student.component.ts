@@ -41,7 +41,18 @@ export class FormStudentComponent  implements OnInit {
   createUpdateStudent() {
 
     if(this.update) {
-
+      this.sqliteService.updateStudent(this.student).then( () => {
+        this.alertService.alertMessage(
+          this.translate.instant('label.success'),
+          this.translate.instant('label.success.message.edit.student')
+        );
+        this.closeForm();
+      } ).catch(err => {
+        this.alertService.alertMessage(
+          this.translate.instant('label.error'),
+          this.translate.instant('label.error.message.edit.student')
+        );
+      })
     } else {
       this.sqliteService.createStudent(this.student).then( () => {
         this.alertService.alertMessage(
@@ -49,7 +60,12 @@ export class FormStudentComponent  implements OnInit {
           this.translate.instant('label.success.message.add.student')
         );
         this.closeForm();
-      } )
+      } ).catch(err => {
+        this.alertService.alertMessage(
+          this.translate.instant('label.error'),
+          this.translate.instant('label.error.message.edit.add.student')
+        );
+      })
     }
 
   }
