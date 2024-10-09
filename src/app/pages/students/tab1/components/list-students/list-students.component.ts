@@ -45,4 +45,12 @@ export class ListStudentsComponent  implements OnInit {
     this.showForm = false;
     this.getStudents();
   }
+
+  updateStudent(item: Student) {
+
+  }
+
+  deleteStudentConfirm(item: Student) {
+
+  }
 }
