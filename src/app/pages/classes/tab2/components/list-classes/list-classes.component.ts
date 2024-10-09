@@ -4,6 +4,7 @@ import {SqliteManagerService} from "../../../../../service/sqlite-manager.servic
 import {Student} from "../../../../../models/student";
 import {AlertService} from "../../../../../service/alert.service";
 import {TranslateService} from "@ngx-translate/core";
+import {Filter} from "../../../../../models/filter";
 
 @Component({
   selector: 'app-list-classes',
@@ -15,6 +16,7 @@ export class ListClassesComponent  implements OnInit {
   public classes: Class[];
   public classSelected: Class;
   public showForm: boolean;
+  public filter: Filter;
 
   constructor(
     private sqliteService: SqliteManagerService,
@@ -24,6 +26,7 @@ export class ListClassesComponent  implements OnInit {
     this.classes = [];
     this.showForm = false;
     this.classSelected = null;
+    this.filter = new Filter();
   }
 
   ngOnInit() {

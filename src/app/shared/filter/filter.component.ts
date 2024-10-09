@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule, PopoverController} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
 import {FilterContentComponent} from "./filter-content/filter-content.component";
 import {TranslateModule} from "@ngx-translate/core";
+import {Filter} from "../../models/filter";
 
 @Component({
   selector: 'app-filter',
@@ -17,6 +18,8 @@ import {TranslateModule} from "@ngx-translate/core";
   ]
 })
 export class FilterComponent  implements OnInit {
+
+  @Input() filter : Filter;
 
   public showFilter: boolean;
 
@@ -35,7 +38,9 @@ export class FilterComponent  implements OnInit {
       component: FilterContentComponent,
       backdropDismiss: true,
       event,
-      componentProps: {}
+      componentProps: {
+        filter: this.filter
+      }
     })
 
     popover.onDidDismiss().then( (event) => {
