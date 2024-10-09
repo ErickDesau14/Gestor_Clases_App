@@ -2,6 +2,10 @@
   <ion-row>
     <ion-col *ngIf="!showForm">
 
+      <app-filter>
+
+      </app-filter>
+
       <ion-row>
         <ion-col>
           <app-list-data [data]="classes" emptyText="label.no.clases" addText="label.add.class" (add)="onShowForm()">

@@ -9,6 +9,7 @@ import {ListClassesComponent} from "./components/list-classes/list-classes.compo
 import {TranslateModule} from "@ngx-translate/core";
 import {ListDataComponent} from "../../../shared/list-data/list-data.component";
 import {FormClassesComponent} from "./components/form-classes/form-classes.component";
+import {FilterComponent} from "../../../shared/filter/filter.component";
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {FormClassesComponent} from "./components/form-classes/form-classes.compo
     Tab2PageRoutingModule,
     TranslateModule.forChild(),
     ListDataComponent,
-    FormClassesComponent
+    FormClassesComponent,
+    FilterComponent
   ],
   declarations: [Tab2Page, ListClassesComponent]
 })
