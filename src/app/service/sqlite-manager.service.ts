@@ -167,4 +167,26 @@ export class SqliteManagerService {
     })
   }
 
+  async deleteStudent(student: Student) {
+    // BORRADO SUAVE
+    let sql = 'UPDATE students SET active = 0 WHERE id = ?';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [student.id]
+        }
+      ]
+    }).then( (change: capSQLiteChanges) => {
+      if(this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return change;
+    })
+  }
+
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Student} from "../../../../../models/student";
 import {SqliteManagerService} from "../../../../../service/sqlite-manager.service";
+import {AlertService} from "../../../../../service/alert.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-list-students',
@@ -14,7 +16,9 @@ export class ListStudentsComponent  implements OnInit {
   public showForm: boolean;
 
   constructor(
-    private sqliteService: SqliteManagerService
+    private sqliteService: SqliteManagerService,
+    private alertService: AlertService,
+    private translate: TranslateService
   ) {
     this.showForm = false;
     this.students = [];
@@ -54,5 +58,29 @@ export class ListStudentsComponent  implements OnInit {
 
   deleteStudentConfirm(item: Student) {
 
+    const self = this;
+    this.alertService.alertConfirm(
+      this.translate.instant('label.confirm'),
+      this.translate.instant('label.confirm.message.student'),
+      function () {
+        self.deleteStudent(item);
+      }
+    )
   }
+
+  deleteStudent(student: Student) {
+    this.sqliteService.deleteStudent(student).then( () => {
+      this.alertService.alertMessage(
+        this.translate.instant('label.success'),
+        this.translate.instant('label.success.message.remove.student')
+      );
+      this.getStudents();
+    } ).catch( err => {
+      this.alertService.alertMessage(
+        this.translate.instant('label.error'),
+        this.translate.instant('label.error.message.remove.student')
+      );
+    })
+  }
+
 }
