@@ -5,6 +5,7 @@ import { Class } from 'src/app/models/class';
 import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
 import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
+import {Payment} from "../../../../../models/payment";
 
 @Component({
   selector: 'app-form-classes',
@@ -14,6 +15,9 @@ import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 export class FormClassesComponent  implements OnInit {
 
   @Input() classObj: Class;
+  public payment: Payment;
+  public paid: boolean;
+  public alreadyPaid: boolean;
 
   @Output() close: EventEmitter<boolean>;
 
@@ -24,7 +28,7 @@ export class FormClassesComponent  implements OnInit {
     private sqliteService: SqliteManagerService,
     private alertService: AlertService,
     private translate: TranslateService
-  ) { 
+  ) {
     this.update = false;
     this.close = new EventEmitter<boolean>();
   }
@@ -34,6 +38,9 @@ export class FormClassesComponent  implements OnInit {
     if(!this.classObj){
       this.classObj = new Class();
       this.classObj.price = 0;
+      this.payment = new Payment();
+      this.paid = false;
+      this.alreadyPaid = false;
     }else{
       this.update = true;
     }
