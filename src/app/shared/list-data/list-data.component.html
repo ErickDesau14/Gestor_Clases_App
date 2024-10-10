@@ -1,15 +1,15 @@
+
+
 <ion-row *ngIf="showAdd">
   <ion-col>
     <ion-item (click)="addData()">
-      <ion-label *ngIf="addText">
-        {{addText | translate}}
-      </ion-label>
+      <ion-label *ngIf="addText">{{addText | translate}}</ion-label>
       <ion-icon name="add-outline"></ion-icon>
     </ion-item>
   </ion-col>
 </ion-row>
 
-<ion-row *ngIf="!data || (data && data.length === 0)">
+<ion-row *ngIf="!data || (data && data.length == 0)">
   <ion-col>
     <ion-text *ngIf="emptyText">{{emptyText | translate}}</ion-text>
   </ion-col>
@@ -18,10 +18,7 @@
 <ng-container *ngIf="data && data.length > 0">
   <ion-row *ngFor="let d of data">
     <ion-col>
-      <ng-template *ngTemplateOutlet="templateData; context: {
-    item: d}">
-      </ng-template>
+      <ng-template *ngTemplateOutlet="templateData; context: {item: d}"></ng-template>
     </ion-col>
   </ion-row>
 </ng-container>
-

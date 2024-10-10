@@ -1,11 +1,9 @@
 <form (ngSubmit)="createUpdateClass()">
 
   <ion-item>
-    <ion-label>
-      {{'label.class.date.start' | translate}}
-    </ion-label>
-    <ion-datetime-button slot="end" displayFormat="DD MM yyyy HH MM" datetime="date_start"></ion-datetime-button>
-    <ion-modal [keepContentsMounted]="true" >
+    <ion-label>{{'label.class.date.start' | translate}}</ion-label>
+    <ion-datetime-button slot="end" displayFormat="DD MMM yyyy HH MM" datetime="date_start"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
       <ng-template>
         <ion-datetime id="date_start" [(ngModel)]="classObj.date_start" name="date_start"></ion-datetime>
       </ng-template>
@@ -13,11 +11,9 @@
   </ion-item>
 
   <ion-item>
-    <ion-label>
-      {{'label.class.date.end' | translate}}
-    </ion-label>
-    <ion-datetime-button slot="end" displayFormat="DD MM yyyy HH MM" datetime="date_end"></ion-datetime-button>
-    <ion-modal [keepContentsMounted]="true" >
+    <ion-label>{{'label.class.date.end' | translate}}</ion-label>
+    <ion-datetime-button slot="end" displayFormat="DD MMM yyyy HH MM" datetime="date_end"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
       <ng-template>
         <ion-datetime id="date_end" [(ngModel)]="classObj.date_end" name="date_end"></ion-datetime>
       </ng-template>
@@ -26,16 +22,13 @@
 
   <ion-item>
     <ion-select [label]="'label.form.class.student' | translate" name="student" [(ngModel)]="classObj.id_student">
-      <ion-select-option [value]="student.id" *ngFor="let student of students">
-        {{student.name + ' ' + student.surname}}
-      </ion-select-option>
+      <ion-select-option [value]="student.id" *ngFor="let student of students">{{student.name + ' ' + student.surname}}</ion-select-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
-    <ion-range min="0" max="1000" [(ngModel)]="classObj.price" name="price" [label]="'label.form.class.price' | translate">
-    </ion-range>
-    <ion-text>{{classObj.price}} $</ion-text>
+    <ion-range min="0" max="100" [(ngModel)]="classObj.price" name="price" [label]="'label.form.class.price' | translate"></ion-range>
+    <ion-text>{{classObj.price}} €</ion-text>
   </ion-item>
 
   <ion-grid>

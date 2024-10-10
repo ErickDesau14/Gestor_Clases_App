@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {Class} from "../../../../../models/class";
-import {SqliteManagerService} from "../../../../../service/sqlite-manager.service";
-import {Student} from "../../../../../models/student";
-import {AlertService} from "../../../../../service/alert.service";
-import {TranslateService} from "@ngx-translate/core";
-import {Filter} from "../../../../../models/filter";
+import { TranslateService } from '@ngx-translate/core';
+import { Class } from 'src/app/models/class';
+import { Filter } from 'src/app/models/filter';
+import { Student } from 'src/app/models/student';
+import { AlertService } from 'src/app/services/alert.service';
+import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 
 @Component({
   selector: 'app-list-classes',
   templateUrl: './list-classes.component.html',
   styleUrls: ['./list-classes.component.scss'],
 })
-export class ListClassesComponent  implements OnInit {
+export class ListClassesComponent implements OnInit {
 
   public classes: Class[];
   public classSelected: Class;
@@ -29,11 +29,11 @@ export class ListClassesComponent  implements OnInit {
     this.filter = new Filter();
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.getClasses();
   }
 
-  getClasses() {
+  getClasses(){
 
     Promise.all([
       this.sqliteService.getClasses(this.filter),
@@ -42,47 +42,38 @@ export class ListClassesComponent  implements OnInit {
       this.classes = results[0];
       let students = results[1];
       this.associateStudentsClasses(students);
-      console.log(this.classes)
+      console.log(this.classes);
+      
     })
 
   }
 
-  private associateStudentsClasses(students: Student[]) {
+  private associateStudentsClasses(students: Student[]){
     this.classes.forEach(c => {
       let student = students.find(s => s.id == c.id_student);
-      if (student) {
+      if(student){
         c.student = student;
       }
     })
   }
 
-  onShowForm() {
-    this.showForm = true;
-  }
-
-  onCloseForm() {
-    this.showForm = false;
-    this.getClasses();
-    this.classSelected = null;
-  }
-
-  updateClass(item: Class) {
+  updateClass(item: Class){
     this.classSelected = item;
     this.showForm = true;
   }
 
-  deleteClassConfirm(item: Class) {
+  deleteClassConfirm(item: Class){
     const self = this;
     this.alertService.alertConfirm(
       this.translate.instant('label.confirm'),
       this.translate.instant('label.confirm.message.class'),
       function() {
-        self.deleteClass(item)
+        self.deleteClass(item);
       }
     )
   }
 
-  deleteClass(c: Class) {
+  deleteClass(c: Class){
     this.sqliteService.deleteClass(c).then( () => {
       this.alertService.alertMessage(
         this.translate.instant('label.success'),
@@ -97,9 +88,19 @@ export class ListClassesComponent  implements OnInit {
     })
   }
 
-  filterData($event: Filter) {
+  filterData($event: Filter){
     this.filter = $event;
     console.log(this.filter);
+    this.getClasses();
+  }
+
+  onShowForm() {
+    this.showForm = true;
+  }
+
+  onCloseForm(){
+    this.showForm = false;
+    this.classSelected = null;
     this.getClasses();
   }
 }

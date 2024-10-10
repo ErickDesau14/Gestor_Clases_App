@@ -1,26 +1,21 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IonicModule, PopoverController} from "@ionic/angular";
-import {CommonModule} from "@angular/common";
-import {FilterContentComponent} from "./filter-content/filter-content.component";
-import {TranslateModule} from "@ngx-translate/core";
-import {Filter} from "../../models/filter";
-import * as moment from "moment";
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IonicModule, PopoverController } from '@ionic/angular';
+import { FilterContentComponent } from './filter-content/filter-content.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { Filter } from 'src/app/models/filter';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
   standalone: true,
-  imports: [
-    IonicModule,
-    CommonModule,
-    FilterContentComponent,
-    TranslateModule
-  ]
+  imports: [IonicModule, CommonModule, FilterContentComponent, TranslateModule]
 })
-export class FilterComponent  implements OnInit {
+export class FilterComponent implements OnInit {
 
-  @Input() filter : Filter;
+  @Input() filter: Filter;
 
   @Output() filterData: EventEmitter<Filter>;
 
@@ -34,12 +29,11 @@ export class FilterComponent  implements OnInit {
   }
 
   ngOnInit() {
-    // this.createPopover(null);
-    if (!this.filter.date_start) {
-      this.filter.date_start = moment().format("YYYY-MM-DDHH:mm");
+    if(!this.filter.date_start){
+      this.filter.date_start = moment().format("YYYY-MM-DDTHH:mm");
     }
-    if (!this.filter.date_end) {
-      this.filter.date_end = moment().format("YYYY-MM-DDHH:mm");
+    if(!this.filter.date_end){
+      this.filter.date_end = moment().format("YYYY-MM-DDTHH:mm");
     }
   }
 
@@ -54,25 +48,26 @@ export class FilterComponent  implements OnInit {
       }
     })
 
-    popover.onDidDismiss().then( (event) => {
-      console.log(event.data);
+    popover.onDidDismiss().then((event) => {
+      console.log(event);
       this.showFilter = false;
-      if (event.data) {
+      if(event.data){
         this.filterData.emit(event.data);
       }
+      
     })
 
     await popover.present();
   }
 
-  showHideFilter($event: MouseEvent) {
+  showHideFilter($event) {
+
     this.showFilter = !this.showFilter;
 
-    if(this.showFilter){
+    if (this.showFilter) {
       this.createPopover($event);
     }
+
   }
-
-
 
 }

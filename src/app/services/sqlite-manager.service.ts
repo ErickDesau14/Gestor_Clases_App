@@ -1,18 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  CapacitorSQLite,
-  capSQLiteChanges,
-  capSQLiteValues,
-  JsonSQLite
-} from '@capacitor-community/sqlite';
+import { CapacitorSQLite, JsonSQLite, capSQLiteChanges, capSQLiteValues } from '@capacitor-community/sqlite';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import {Student} from "../models/student";
-import {Class} from "../models/class";
-import {Filter} from "../models/filter";
+import { Student } from '../models/student';
+import { Class } from '../models/class';
+import { Filter } from '../models/filter';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +51,7 @@ export class SqliteManagerService {
       await sqlite.initWebStore();
     }
 
-    await this.setupDatabase();
+    this.setupDatabase();
 
   }
 
@@ -93,17 +88,45 @@ export class SqliteManagerService {
 
   }
 
-  async getDbName(){
-    if(!this.dbName){
+  async getDbName() {
+    if (!this.dbName) {
       const dbName = await Preferences.get({ key: this.DB_NAME_KEY });
       this.dbName = dbName.value;
     }
     return this.dbName;
   }
 
+  async createStudent(student: Student) {
+    let sql = 'INSERT INTO students(name, surname, email, phone) VALUES(?,?,?,?)';
+
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: sql,
+          values: [
+            student.name,
+            student.surname,
+            student.email,
+            student.phone
+          ]
+        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return changes;
+    })
+
+
+  }
+
   async getStudents(search?: string) {
     let sql = 'SELECT * FROM students WHERE active = 1';
-
     if (search) {
       sql += ` and (upper(name) LIKE '%${search.toLocaleUpperCase()}%' or upper(surname) LIKE '%${search.toLocaleUpperCase()}%')`;
     }
@@ -112,43 +135,20 @@ export class SqliteManagerService {
     return CapacitorSQLite.query({
       database: dbName,
       statement: sql
-    }).then( (response: capSQLiteValues) => {
-      let students = [];
+    }).then((response: capSQLiteValues) => {
+      let students: Student[] = [];
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let student = row as Student;
         students.push(student);
       }
-      return Promise.resolve(students)
-    }).catch(error => Promise.reject(error));
-  }
-
-
-  async createStudent(student: Student) {
-    let sql = 'INSERT INTO students (name, surname, email, phone) VALUES (?,?,?,?)';
-
-    const dbName = await this.getDbName();
-    return CapacitorSQLite.executeSet({
-      database: dbName,
-      set: [
-        {
-          statement: sql,
-          values: [student.name, student.surname, student.email, student.phone]
-        }
-      ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
-        CapacitorSQLite.saveToStore({
-          database: dbName
-        });
-      }
-      return change;
-    })
+      return Promise.resolve(students);
+    }).catch(error => Promise.reject(error))
 
   }
 
   async updateStudent(student: Student) {
-    let sql = 'UPDATE students SET name = ?, surname = ?, email = ?, phone = ? WHERE id = ?';
+    let sql = 'UPDATE students SET name=?, surname=?, email=?, phone=? WHERE id=?';
 
     const dbName = await this.getDbName();
     return CapacitorSQLite.executeSet({
@@ -156,72 +156,49 @@ export class SqliteManagerService {
       set: [
         {
           statement: sql,
-          values: [student.name, student.surname, student.email, student.phone, student.id]
+          values: [
+            student.name,
+            student.surname,
+            student.email,
+            student.phone,
+            student.id
+          ]
         }
       ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
       }
-      return change;
+      return changes;
     })
   }
 
   async deleteStudent(student: Student) {
-    // BORRADO SUAVE
-    let sql = 'UPDATE students SET active = 0 WHERE id = ?';
+    let sql = 'UPDATE students SET active=0 WHERE id=?';
     const dbName = await this.getDbName();
     return CapacitorSQLite.executeSet({
       database: dbName,
       set: [
         {
           statement: sql,
-          values: [student.id]
+          values: [
+            student.id
+          ]
         }
       ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
       }
-      return change;
+      return changes;
     })
   }
 
-  async getClasses(filter: Filter) {
-    let sql = 'SELECT * FROM class WHERE active = 1';
-    if (filter) {
-      if(filter.date_start) {
-        sql += ` AND date_start >= '${filter.date_start}'`;
-      }
-      if (filter.date_end) {
-        sql += ` AND date_end <= '${filter.date_end}'`;
-      }
-      if (filter.id_student) {
-        sql += ` AND id_student = '${filter.id_student}'`;
-      }
-    }
-    sql += ' ORDER BY date_start,date_end';
-    const dbName = await this.getDbName();
-    return CapacitorSQLite.query({
-      database: dbName,
-      statement: sql,
-      values: []
-    }).then( (response: capSQLiteValues) => {
-      let classes: Class[] = [];
-      for (let index = 0; index < response.values.length; index++) {
-        const row = response.values[index];
-        const c: Class = row as Class;
-        classes.push(c);
-      }
-      return Promise.resolve(classes);
-    } ).catch(err => Promise.reject(err))
-  }
-
-  async createClass(classObj: Class) {
+  async createClass(c: Class) {
     let sql = 'INSERT INTO class (date_start, date_end, id_student, price) VALUES (?,?,?,?)';
     const dbName = await this.getDbName();
     return CapacitorSQLite.executeSet({
@@ -229,42 +206,83 @@ export class SqliteManagerService {
       set: [
         {
           statement: sql,
-          values: [classObj.date_start, classObj.date_end, classObj.id_student, classObj.price]
+          values: [
+            c.date_start,
+            c.date_end,
+            c.id_student,
+            c.price
+          ]
         }
       ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
       }
-      return change;
+      return changes;
     })
   }
 
-  async updateClass(classObj: Class) {
-    const sql = 'UPDATE class SET date_start=?, date_end=?, id_student=?, price=? WHERE id = ?';
+  async getClasses(filter: Filter) {
+    let sql = 'SELECT * FROM class WHERE active=1 ';
+    if(filter){
+      if(filter.date_start){
+        sql += ` and date_start >= '${filter.date_start}'`;
+      }
+      if(filter.date_end){
+        sql += ` and date_end <= '${filter.date_end}'`;
+      }
+      if(filter.id_student){
+        sql += ` and id_student = '${filter.id_student}'`;
+      }
+    }
+    sql += " ORDER BY date_start,date_end";
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql
+    }).then((response: capSQLiteValues) => {
+      let classes: Class[] = [];
+      for (let index = 0; index < response.values.length; index++) {
+        const row = response.values[index];
+        const c: Class = row as Class;
+        classes.push(c);
+      }
+      return Promise.resolve(classes);
+    }).catch(err => Promise.reject(err))
+  }
+
+  async updateClass(c: Class) {
+    let sql = 'UPDATE class SET date_start=?, date_end=?, id_student=?, price=? WHERE id=?';
     const dbName = await this.getDbName();
     return CapacitorSQLite.executeSet({
       database: dbName,
       set: [
         {
           statement: sql,
-          values: [classObj.date_start, classObj.date_end, classObj.id_student, classObj.price, classObj.id]
+          values: [
+            c.date_start,
+            c.date_end,
+            c.id_student,
+            c.price,
+            c.id
+          ]
         }
       ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
       }
-      return change;
+      return changes;
     })
+
   }
 
-  async deleteClass(c: Class) {
-    let sql = 'UPDATE class SET active = 0 WHERE id=?';
+  async deleteClass(c: Class){
+    let sql = 'UPDATE class SET active=0 WHERE id=?';
     const dbName = await this.getDbName();
     return CapacitorSQLite.executeSet({
       database: dbName,
@@ -276,13 +294,15 @@ export class SqliteManagerService {
           ]
         }
       ]
-    }).then( (change: capSQLiteChanges) => {
-      if(this.isWeb) {
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
         CapacitorSQLite.saveToStore({
           database: dbName
         });
       }
-      return change;
+      return changes;
     })
   }
+
+
 }

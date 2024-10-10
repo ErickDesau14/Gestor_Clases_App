@@ -8,44 +8,44 @@
         </ion-col>
       </ion-row>
 
+
       <ion-row>
         <ion-col>
-          <app-list-data
-            [data]="students"
-            emptyText="label.no.students"
-            addText="label.add.student"
-            (add)="onShowForm()">
+          <app-list-data 
+          [data]="students"
+          emptyText="label.no.students"
+          addText="label.add.student"
+          (add)="onShowForm()">
 
-            <ng-template #templateData let-item="item">
+          <ng-template #templateData let-item="item">
 
-              <ion-item-sliding>
-                <ion-item>
-                  <ion-label>
-                    {{item.name + ' ' + item.surname}}
-                  </ion-label>
-                </ion-item>
+            <ion-item-sliding>
 
-                <ion-item-options side="end">
-                  <ion-item-option color="warning" (click)="updateStudent(item)">
-                    <ion-icon name="create" slot="icon-only"></ion-icon>
-                  </ion-item-option>
+              <ion-item>
+                <ion-label>{{item.name + ' ' + item.surname}}</ion-label>
+              </ion-item>
 
-                  <ion-item-option color="danger" (click)="deleteStudentConfirm(item)">
-                    <ion-icon name="trash" slot="icon-only"></ion-icon>
-                  </ion-item-option>
-                </ion-item-options>
-              </ion-item-sliding>
+              <ion-item-options side="end">
+                <ion-item-option color="warning" (click)="updateStudent(item)">
+                  <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
+                </ion-item-option>
+                <ion-item-option color="danger" (click)="deleteStudentConfirm(item)">
+                  <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
 
-            </ng-template>
+            </ion-item-sliding>
 
-          </app-list-data>
+
+          </ng-template>
+        
+        </app-list-data>
         </ion-col>
       </ion-row>
 
     </ion-col>
-
     <ion-col *ngIf="showForm">
-      <app-form-student [student]="studentSelected" (closeEvent)="onCloseForm()"></app-form-student>
+      <app-form-student [student]="studentSelected" (close)="onCloseForm()"></app-form-student>
     </ion-col>
   </ion-row>
 </ion-grid>

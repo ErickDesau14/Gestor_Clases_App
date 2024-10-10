@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {AlertController} from "@ionic/angular";
-import {TranslateService} from "@ngx-translate/core";
+import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,13 @@ export class AlertService {
   async alertMessage(
     header: string,
     message: string
-  ) {
+  ){
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
+      header, 
+      message, 
       buttons: ['OK']
     })
-    alert.present();
+    await alert.present();
   }
 
   async alertConfirm(
@@ -29,6 +29,7 @@ export class AlertService {
     message: string,
     functionOk: Function
   ){
+
     const alert = await this.alertController.create({
       header,
       message,
@@ -40,7 +41,7 @@ export class AlertService {
         },
         {
           text: this.translate.instant('label.ok'),
-          role: 'cofirm',
+          role: 'confirm',
           handler: () => {
             functionOk();
           }
@@ -49,4 +50,5 @@ export class AlertService {
     })
     await alert.present();
   }
+
 }

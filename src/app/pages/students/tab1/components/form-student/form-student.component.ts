@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Student} from "../../../../../models/student";
-import {SqliteManagerService} from "../../../../../service/sqlite-manager.service";
-import {TranslateService} from "@ngx-translate/core";
-import {AlertService} from "../../../../../service/alert.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Student } from 'src/app/models/student';
+import { AlertService } from 'src/app/services/alert.service';
+import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 
 @Component({
   selector: 'app-form-student',
@@ -12,8 +12,8 @@ import {AlertService} from "../../../../../service/alert.service";
 export class FormStudentComponent  implements OnInit {
 
   @Input() student: Student;
-
-  @Output() closeEvent: EventEmitter<boolean>;
+  
+  @Output() close: EventEmitter<boolean>;
 
   public update: boolean;
 
@@ -21,52 +21,52 @@ export class FormStudentComponent  implements OnInit {
     private sqliteService: SqliteManagerService,
     private translate: TranslateService,
     private alertService: AlertService
-  ) {
-    this.closeEvent = new EventEmitter<boolean>();
+  ) { 
+    this.close = new EventEmitter<boolean>();
   }
 
   ngOnInit() {
-    if (!this.student) {
+    if(!this.student){
       this.student = new Student();
-
-    } else {
+    }else{
       this.update = true;
     }
   }
 
-  closeForm() {
-    this.closeEvent.emit(true);
-  }
-
-  createUpdateStudent() {
-
-    if(this.update) {
+  createUpdateStudent(){
+    
+    if(this.update){
       this.sqliteService.updateStudent(this.student).then( () => {
         this.alertService.alertMessage(
           this.translate.instant('label.success'),
           this.translate.instant('label.success.message.edit.student')
         );
         this.closeForm();
-      } ).catch(err => {
+      }).catch(err => {
         this.alertService.alertMessage(
           this.translate.instant('label.error'),
           this.translate.instant('label.error.message.edit.student')
         );
       })
-    } else {
+    }else{
       this.sqliteService.createStudent(this.student).then( () => {
         this.alertService.alertMessage(
           this.translate.instant('label.success'),
           this.translate.instant('label.success.message.add.student')
         );
         this.closeForm();
-      } ).catch(err => {
+      }).catch(err => {
         this.alertService.alertMessage(
           this.translate.instant('label.error'),
-          this.translate.instant('label.error.message.edit.add.student')
+          this.translate.instant('label.error.message.add.student')
         );
       })
     }
 
   }
+
+  closeForm(){
+    this.close.emit(true);
+  }
+
 }
