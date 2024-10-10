@@ -44,6 +44,18 @@ export class FormClassesComponent  implements OnInit {
       this.alreadyPaid = false;
     }else{
       this.update = true;
+
+      this.sqliteService.getPaymentByClass(this.classObj.id).then( (payment: Payment) => {
+        if (payment) {
+          this.payment = payment;
+          this.alreadyPaid = this.payment.paid == 1;
+          this.paid = this.payment.paid == 1;
+        } else {
+          this.paid = false;
+          this.payment = new Payment();
+        }
+      })
+
     }
 
     this.sqliteService.getStudents().then( (students: Student[]) => {

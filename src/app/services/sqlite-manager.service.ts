@@ -305,6 +305,23 @@ export class SqliteManagerService {
     })
   }
 
+  async getPaymentByClass(idClass: Number){
+    let sql = 'SELECT * FROM payment WHERE id_class = ?';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql,
+      values: [idClass]
+    }).then( (response: capSQLiteValues) => {
+      let payment: Payment = null;
+      if(response.values.length > 0) {
+        const row = response.values[0];
+        payment = row as Payment;
+      }
+      return Promise.resolve(payment);
+    }).catch(err => Promise.reject(err));
+  }
+
   async getPayments(filter?: Filter) {
     let sql = 'SELECT p.* FROM payment p, class c WHERE p.id_class = c.id AND c.active=1';
     if (filter && filter.paid != null) {
