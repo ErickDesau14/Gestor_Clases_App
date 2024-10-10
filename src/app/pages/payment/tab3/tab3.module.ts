@@ -8,6 +8,7 @@ import { Tab3PageRoutingModule } from './tab3-routing.module';
 import {ListPaymentComponent} from "../components/list-payment/list-payment.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {ListDataComponent} from "../../../shared/list-data/list-data.component";
+import {FilterComponent} from "../../../shared/filter/filter.component";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {ListDataComponent} from "../../../shared/list-data/list-data.component";
     FormsModule,
     Tab3PageRoutingModule,
     TranslateModule.forChild(),
-    ListDataComponent
+    ListDataComponent,
+    FilterComponent
   ],
   declarations: [Tab3Page, ListPaymentComponent]
 })

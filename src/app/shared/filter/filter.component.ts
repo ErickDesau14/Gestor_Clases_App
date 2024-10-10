@@ -16,6 +16,7 @@ import * as moment from 'moment';
 export class FilterComponent implements OnInit {
 
   @Input() filter: Filter;
+  @Input() payment: boolean = false;
 
   @Output() filterData: EventEmitter<Filter>;
 
@@ -35,6 +36,9 @@ export class FilterComponent implements OnInit {
     if(!this.filter.date_end){
       this.filter.date_end = moment().format("YYYY-MM-DDTHH:mm");
     }
+    if (this.filter.paid === null) {
+      this.filter.paid = false;
+    }
   }
 
   async createPopover(event: any) {
@@ -44,7 +48,8 @@ export class FilterComponent implements OnInit {
       event,
       cssClass: 'custom-popover-content',
       componentProps: {
-        filter: this.filter
+        filter: this.filter,
+        payment: this.payment
       }
     })
 
@@ -54,7 +59,7 @@ export class FilterComponent implements OnInit {
       if(event.data){
         this.filterData.emit(event.data);
       }
-      
+
     })
 
     await popover.present();

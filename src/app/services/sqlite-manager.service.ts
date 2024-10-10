@@ -305,9 +305,35 @@ export class SqliteManagerService {
     })
   }
 
-  async getPayments() {
+  async getPayments(filter?: Filter) {
     let sql = 'SELECT p.* FROM payment p, class c WHERE p.id_class = c.id AND c.active=1';
+    if (filter && filter.paid != null) {
+      if (filter.paid) {
+        sql += ' and p.paid = 1';
+      } else {
+        sql += ' and p.paid = 0';
+      }
+      if (filter.date_start) {
+        if (filter.paid) {
+          sql += ` and p.date >= '${filter.date_start}'`;
+        } else {
+          sql += ` and c.date_start >= '${filter.date_start}'`;
+        }
+      }
 
+      if (filter.date_end) {
+        if (filter.paid) {
+          sql += ` and p.date <= '${filter.date_end}'`;
+        } else {
+          sql += ` and c.date_end <= '${filter.date_end}'`;
+        }
+      }
+
+      if (filter.id_student) {
+        sql += ` and c.id_student = ${filter.id_student}`;
+      }
+
+    }
     sql += " ORDER BY p.date";
     const dbName = await this.getDbName();
     return CapacitorSQLite.query({

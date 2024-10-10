@@ -3,6 +3,7 @@ import {Payment} from "../../../../models/payment";
 import {SqliteManagerService} from "../../../../services/sqlite-manager.service";
 import {Class} from "../../../../models/class";
 import {Student} from "../../../../models/student";
+import {Filter} from "../../../../models/filter";
 
 @Component({
   selector: 'app-list-payment',
@@ -13,6 +14,7 @@ export class ListPaymentComponent  implements OnInit {
 
   public payments: Payment[];
   public total: number;
+  public filter: Filter;
 
   constructor(
     private sqliteService: SqliteManagerService
@@ -23,11 +25,13 @@ export class ListPaymentComponent  implements OnInit {
   ngOnInit() {
     this.getPayments();
     this.total = 0;
+    this.filter = new Filter();
+    this.filter.paid = null;
   }
 
   getPayments() {
     Promise.all([
-      this.sqliteService.getPayments(),
+      this.sqliteService.getPayments(this.filter),
       this.sqliteService.getClasses(),
       this.sqliteService.getStudents()
     ]).then ( (results) => {
@@ -55,4 +59,8 @@ export class ListPaymentComponent  implements OnInit {
     })
   }
 
+  filterData($event: Filter) {
+    this.filter = $event;
+    this.getPayments();
+  }
 }

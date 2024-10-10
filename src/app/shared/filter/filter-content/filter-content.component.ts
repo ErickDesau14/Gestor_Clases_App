@@ -17,6 +17,7 @@ import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 export class FilterContentComponent implements OnInit {
 
   @Input() filter: Filter;
+  @Input() payment: boolean;
 
   public students: Student[];
 
