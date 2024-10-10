@@ -5,6 +5,7 @@ import { Filter } from 'src/app/models/filter';
 import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
 import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
+import {Payment} from "../../../../../models/payment";
 
 @Component({
   selector: 'app-list-classes',
@@ -37,11 +38,14 @@ export class ListClassesComponent implements OnInit {
 
     Promise.all([
       this.sqliteService.getClasses(this.filter),
-      this.sqliteService.getStudents()
+      this.sqliteService.getStudents(),
+      this.sqliteService.getPayments()
     ]).then(results => {
       this.classes = results[0];
       let students = results[1];
+      let payments = results[2];
       this.associateStudentsClasses(students);
+      this.needPayClasses(payments);
       console.log(this.classes);
 
     })
@@ -53,6 +57,15 @@ export class ListClassesComponent implements OnInit {
       let student = students.find(s => s.id == c.id_student);
       if(student){
         c.student = student;
+      }
+    })
+  }
+
+  private needPayClasses(payments: Payment[]) {
+    payments.forEach(p => {
+      let classFound = this.classes.find(c => c.id == p.id_class);
+      if(classFound && !p.paid){
+        classFound.needPay = true;
       }
     })
   }

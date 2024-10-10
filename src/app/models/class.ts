@@ -8,4 +8,5 @@ export class Class {
     price: number;
     active: number;
     student?: Student;
+    needPay?: boolean;
 }
