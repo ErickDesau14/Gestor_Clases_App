@@ -27,7 +27,7 @@ export class AlertService {
   async alertConfirm(
     header: string,
     message: string,
-    functionOk: Function
+    functionOk: Function // Funcion a ejecutar cuando le demos a OK
   ){
 
     const alert = await this.alertController.create({

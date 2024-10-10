@@ -1,5 +1,5 @@
 
-
+<!-- Añadir nuevo elemento -->
 <ion-row *ngIf="showAdd">
   <ion-col>
     <ion-item (click)="addData()">
@@ -9,12 +9,14 @@
   </ion-col>
 </ion-row>
 
+<!-- Si esta vacio -->
 <ion-row *ngIf="!data || (data && data.length == 0)">
   <ion-col>
     <ion-text *ngIf="emptyText">{{emptyText | translate}}</ion-text>
   </ion-col>
 </ion-row>
 
+<!-- Datos -->
 <ng-container *ngIf="data && data.length > 0">
   <ion-row *ngFor="let d of data">
     <ion-col>

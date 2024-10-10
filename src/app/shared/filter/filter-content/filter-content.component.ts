@@ -16,9 +16,11 @@ import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 })
 export class FilterContentComponent implements OnInit {
 
+  // Inputs
   @Input() filter: Filter;
   @Input() payment: boolean;
 
+  // Atributos
   public students: Student[];
 
   constructor(
@@ -29,16 +31,19 @@ export class FilterContentComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Obtenemos los estudiantes
     this.sqliteService.getStudents().then((students: Student[]) => {
       this.students = students;
     })
   }
 
   filterData(){
+    // Cerramos el popover devolviendo el filtro
     this.popoverController.dismiss(this.filter);
   }
 
   reset(){
+    // Cerramos el popover devolviendo el filtro reseteado
     this.filter = new Filter();
     this.popoverController.dismiss(this.filter);
   }

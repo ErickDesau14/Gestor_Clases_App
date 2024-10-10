@@ -11,10 +11,13 @@ import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 })
 export class FormStudentComponent  implements OnInit {
 
+  // Inputs
   @Input() student: Student;
   
+  // Outputs
   @Output() close: EventEmitter<boolean>;
 
+  // Atributos
   public update: boolean;
 
   constructor(
@@ -26,6 +29,7 @@ export class FormStudentComponent  implements OnInit {
   }
 
   ngOnInit() {
+    // Sino nos pasan un estudiante, lo creamos nosotros
     if(!this.student){
       this.student = new Student();
     }else{

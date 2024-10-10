@@ -7,6 +7,6 @@ export class Class {
     id_student: number;
     price: number;
     active: number;
-    student?: Student;
-    needPay?: boolean;
+    student?: Student; // Estudiante de la clase
+    needPay?: boolean; // Indica si falta de pagar
 }

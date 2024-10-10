@@ -9,8 +9,9 @@ import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
   templateUrl: './list-students.component.html',
   styleUrls: ['./list-students.component.scss'],
 })
-export class ListStudentsComponent  implements OnInit {
+export class ListStudentsComponent implements OnInit {
 
+  // Atributos
   public students: Student[];
   public studentSelected: Student;
   public showForm: boolean;
@@ -19,7 +20,7 @@ export class ListStudentsComponent  implements OnInit {
     private sqliteService: SqliteManagerService,
     private alertService: AlertService,
     private translate: TranslateService
-  ) { 
+  ) {
     this.showForm = false;
     this.students = [];
     this.studentSelected = null;
@@ -29,42 +30,43 @@ export class ListStudentsComponent  implements OnInit {
     this.getStudents()
   }
 
-  getStudents(search?: string){
-    this.sqliteService.getStudents(search).then( (students: Student[]) => {
+  getStudents(search?: string) {
+    // Obtengo los estudiantes
+    this.sqliteService.getStudents(search).then((students: Student[]) => {
       this.students = students;
       console.log(this.students);
     })
   }
 
-  onShowForm(){
+  onShowForm() {
     this.showForm = true;
   }
 
-  onCloseForm(){
+  onCloseForm() {
     this.showForm = false;
     this.studentSelected = null;
     this.getStudents();
   }
 
-  updateStudent(item: Student){
+  updateStudent(item: Student) {
     this.studentSelected = item;
     this.showForm = true;
   }
 
-  deleteStudentConfirm(item: Student){
-
+  deleteStudentConfirm(item: Student) {
+    // evitamos problemas de scope dentro de la funcion anonima
     const self = this;
     this.alertService.alertConfirm(
       this.translate.instant('label.confirm'),
       this.translate.instant('label.confirm.message.student'),
-      function() {
+      function () {
         self.deleteStudent(item);
       }
     )
   }
 
-  deleteStudent(student: Student){
-    this.sqliteService.deleteStudent(student).then( () => {
+  deleteStudent(student: Student) {
+    this.sqliteService.deleteStudent(student).then(() => {
       this.alertService.alertMessage(
         this.translate.instant('label.success'),
         this.translate.instant('label.success.message.remove.student')
@@ -79,7 +81,7 @@ export class ListStudentsComponent  implements OnInit {
     })
   }
 
-  filterList($event){
+  filterList($event) {
     console.log($event.detail.value);
     this.getStudents($event.detail.value);
   }

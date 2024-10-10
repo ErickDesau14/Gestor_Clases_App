@@ -12,13 +12,16 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class ListDataComponent {
 
+  // Inputs
   @Input({ required: true }) data: any[];
   @Input() emptyText: string;
   @Input() addText: string;
   @Input() showAdd: boolean = true;
 
+  // Outputs
   @Output() add: EventEmitter<boolean>;
 
+  // Obtiene los datos del template: templateData
   @ContentChild("templateData", { static: false }) templateData: TemplateRef<any>;
 
   constructor() { 

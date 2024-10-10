@@ -15,11 +15,14 @@ import * as moment from 'moment';
 })
 export class FilterComponent implements OnInit {
 
+  // Inputs
   @Input() filter: Filter;
   @Input() payment: boolean = false;
 
+  // Outputs
   @Output() filterData: EventEmitter<Filter>;
 
+  // Atributos
   public showFilter: boolean;
 
   constructor(
@@ -30,38 +33,45 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!this.filter.date_start){
+    // Si la fecha de inicio no esta seteada, se lo hacemos aqui
+    if (!this.filter.date_start) {
       this.filter.date_start = moment().format("YYYY-MM-DDTHH:mm");
     }
-    if(!this.filter.date_end){
+    // Si la fecha de fin no esta seteada, se lo hacemos aqui
+    if (!this.filter.date_end) {
       this.filter.date_end = moment().format("YYYY-MM-DDTHH:mm");
     }
-    if (this.filter.paid === null) {
+    // Si paid no esta seteada, se lo hacemos aqui
+    if (this.filter.paid == null) {
       this.filter.paid = false;
     }
   }
 
   async createPopover(event: any) {
+    // Creamos el popover
     const popover = await this.popoverController.create({
-      component: FilterContentComponent,
-      backdropDismiss: true,
-      event,
-      cssClass: 'custom-popover-content',
-      componentProps: {
+      component: FilterContentComponent, // Componente a cargar
+      backdropDismiss: true, // Si pulsamos fuera, se cierra
+      event, // Donde lo queremos incrustar
+      cssClass: 'custom-popover-content', // Clase adicional
+      componentProps: { // Inputs del componente
         filter: this.filter,
         payment: this.payment
       }
     })
 
+    // Accion cuando se cierra el popover
     popover.onDidDismiss().then((event) => {
       console.log(event);
       this.showFilter = false;
-      if(event.data){
+      // Sino viene nada, no hacemos nada
+      if (event.data) {
         this.filterData.emit(event.data);
       }
 
     })
 
+    // Mostramos el popover
     await popover.present();
   }
 
@@ -70,6 +80,7 @@ export class FilterComponent implements OnInit {
     this.showFilter = !this.showFilter;
 
     if (this.showFilter) {
+      // Mostramos el popover, $event es para hacer referencia al boton donde lo insertamos
       this.createPopover($event);
     }
 

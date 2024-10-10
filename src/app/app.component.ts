@@ -27,18 +27,24 @@ export class AppComponent {
 
   initApp() {
 
+    // Esperamos a que la plataforma este listo
     this.platform.ready().then(async () => {
 
+      // Lenguaje del dispositivo
       const language = await Device.getLanguageCode();
+      // Datos del dispositivo
       const info = await Device.getInfo();
 
       this.isWeb = info.platform == 'web';
 
+      // Indicamos que lenguaje de usar
       if (language.value) {
         this.translate.use(language.value.slice(0, 2));
       }
 
+      // Inicializamos el servicio
       this.sqliteService.init();
+      // Esperamos a que este listo
       this.sqliteService.dbReady.subscribe(isReady => {
         this.load = isReady;
       })

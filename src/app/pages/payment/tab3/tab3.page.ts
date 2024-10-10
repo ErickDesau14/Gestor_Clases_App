@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import {ListPaymentComponent} from "../components/list-payment/list-payment.component";
-import {Filter} from "../../../models/filter";
+import { ListPaymentsComponent } from './components/list-payments/list-payments.component';
+import { Filter } from 'src/app/models/filter';
 
 @Component({
   selector: 'app-tab3',
@@ -9,12 +9,14 @@ import {Filter} from "../../../models/filter";
 })
 export class Tab3Page {
 
-  @ViewChild(ListPaymentComponent) listPayments: ListPaymentComponent;
+  // Obtenemos el componente de la lista de los pagos
+  @ViewChild(ListPaymentsComponent) listPayments: ListPaymentsComponent;
 
-  constructor() {}
+  constructor() { }
 
-  ionViewWillEnter(){
-    if(this.listPayments){
+  // Recarga al entrar
+  ionViewWillEnter() {
+    if (this.listPayments) {
       this.listPayments.filter = new Filter();
       this.listPayments.filter.paid = null;
       this.listPayments.getPayments();

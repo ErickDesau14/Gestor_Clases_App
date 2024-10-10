@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
-import {ListPaymentComponent} from "../components/list-payment/list-payment.component";
-import {TranslateModule} from "@ngx-translate/core";
-import {ListDataComponent} from "../../../shared/list-data/list-data.component";
-import {FilterComponent} from "../../../shared/filter/filter.component";
+import { ListPaymentsComponent } from './components/list-payments/list-payments.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ListDataComponent } from 'src/app/shared/list-data/list-data.component';
+import { FilterComponent } from 'src/app/shared/filter/filter.component';
 
 @NgModule({
   imports: [
@@ -20,6 +20,9 @@ import {FilterComponent} from "../../../shared/filter/filter.component";
     ListDataComponent,
     FilterComponent
   ],
-  declarations: [Tab3Page, ListPaymentComponent]
+  declarations: [
+    Tab3Page,
+    ListPaymentsComponent
+  ]
 })
 export class Tab3PageModule {}
