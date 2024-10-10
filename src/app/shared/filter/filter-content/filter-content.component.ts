@@ -44,6 +44,7 @@ export class FilterContentComponent  implements OnInit {
   }
 
   reset() {
-
+    this.filter = new Filter();
+    this.popoverController.dismiss(this.filter);
   }
 }
