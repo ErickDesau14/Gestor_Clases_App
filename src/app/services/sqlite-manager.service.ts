@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Student } from '../models/student';
 import { Class } from '../models/class';
 import { Filter } from '../models/filter';
+import {Payment} from "../models/payment";
 
 @Injectable({
   providedIn: 'root'
@@ -224,7 +225,7 @@ export class SqliteManagerService {
     })
   }
 
-  async getClasses(filter: Filter) {
+  async getClasses(filter?: Filter) {
     let sql = 'SELECT * FROM class WHERE active=1 ';
     if(filter){
       if(filter.date_start){
@@ -302,6 +303,25 @@ export class SqliteManagerService {
       }
       return changes;
     })
+  }
+
+  async getPayments() {
+    let sql = 'SELECT p.* FROM payment p, class c WHERE p.id_class = c.id c.active=1';
+
+    sql += " ORDER BY p.date";
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.query({
+      database: dbName,
+      statement: sql
+    }).then( (response: capSQLiteValues)=> {
+     let payments: Payment[] = [];
+      for (let index = 0; index < response.values.length; index++) {
+        const row = response.values[index];
+        let payment: Payment = row as Payment;
+        payments.push(payment);
+      }
+      return Promise.resolve(payments);
+    }).catch(err => Promise.reject(err))
   }
 
 

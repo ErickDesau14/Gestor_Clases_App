@@ -17,6 +17,21 @@ export class ListPaymentComponent  implements OnInit {
     this.payments = [];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getPayments();
+  }
+
+  getPayments() {
+    Promise.all([
+      this.sqliteService.getPayments(),
+      this.sqliteService.getClasses(),
+      this.sqliteService.getStudents()
+    ]).then ( (results) => {
+      this.payments = results[0];
+      let classes = results[1];
+      let students = results[2];
+      console.log(this.payments);
+    })
+  }
 
 }
