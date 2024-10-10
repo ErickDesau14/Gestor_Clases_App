@@ -17,7 +17,6 @@ export class SqliteManagerService {
 
   public dbReady: BehaviorSubject<boolean>;
   private isWeb: boolean;
-  private isIOS: boolean;
   private dbName: string;
 
   private DB_SETUP_KEY = 'first_db_setup';
@@ -28,7 +27,6 @@ export class SqliteManagerService {
     private http: HttpClient
   ) {
     this.isWeb = false;
-    this.isIOS = false;
     this.dbName = '';
     this.dbReady = new BehaviorSubject(false);
   }
@@ -55,8 +53,6 @@ export class SqliteManagerService {
       // en Web, debemos llamar a initWebStore
       this.isWeb = true;
       await sqlite.initWebStore();
-    } else if(info.platform == 'ios'){
-      this.isIOS = true;
     }
 
     this.setupDatabase();
@@ -155,13 +151,7 @@ export class SqliteManagerService {
     }).then((response: capSQLiteValues) => {
       // Datos a devolver
       let students: Student[] = [];
-<<<<<<< HEAD
       // Recorremos los resultados
-=======
-      if(this.isIOS && response.values.length > 0) {
-        response.values.shift();
-      }
->>>>>>> refs/remotes/origin/master
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let student = row as Student;
@@ -269,21 +259,11 @@ export class SqliteManagerService {
     return CapacitorSQLite.query({
       database: dbName,
       statement: sql,
-<<<<<<< HEAD
       values: []  // necesario para android
-=======
-      values: []
->>>>>>> refs/remotes/origin/master
     }).then((response: capSQLiteValues) => {
       // Datos a devolver
       let classes: Class[] = [];
-<<<<<<< HEAD
       // Recorremos los resultados
-=======
-      if(this.isIOS && response.values.length > 0) {
-        response.values.shift();
-      }
->>>>>>> refs/remotes/origin/master
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         const c: Class = row as Class;
@@ -428,15 +408,9 @@ export class SqliteManagerService {
     return CapacitorSQLite.query({
       database: dbName,
       statement: sql,
-<<<<<<< HEAD
       values: [] // necesario para android
     }).then((response: capSQLiteValues) => {
       let payments: Payment[] = [];
-=======
-      values: []
-    }).then( (response: capSQLiteValues)=> {
-     let payments: Payment[] = [];
->>>>>>> refs/remotes/origin/master
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let payment: Payment = row as Payment;
