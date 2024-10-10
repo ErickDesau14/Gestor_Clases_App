@@ -6,6 +6,7 @@ import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
 import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 import {Payment} from "../../../../../models/payment";
+import {capSQLiteChanges} from "@capacitor-community/sqlite";
 
 @Component({
   selector: 'app-form-classes',
@@ -70,7 +71,20 @@ export class FormClassesComponent  implements OnInit {
         )
       });
     }else{
-      this.sqliteService.createClass(this.classObj).then( () =>{
+      this.sqliteService.createClass(this.classObj).then( (changes: capSQLiteChanges) =>{
+
+        const idClass = changes.changes.lastId;
+        this.payment.id_class = idClass;
+
+        if (this.paid) {
+          this.payment.date = moment(this.payment.date).format("YYYY-MM-DDTHH:mm");
+          this.payment.paid = 1;
+        } else  {
+          this.payment.paid = 0;
+        }
+
+        this.sqliteService.createPayment(this.payment);
+
         this.alertService.alertMessage(
           this.translate.instant('label.success'),
           this.translate.instant('label.success.message.add.class')
