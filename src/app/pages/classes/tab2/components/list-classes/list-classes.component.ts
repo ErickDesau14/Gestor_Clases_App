@@ -117,4 +117,9 @@ export class ListClassesComponent implements OnInit {
     this.filter = new Filter();
     this.getClasses();
   }
+
+  payClass(c: Class) {
+
+  }
+
 }
