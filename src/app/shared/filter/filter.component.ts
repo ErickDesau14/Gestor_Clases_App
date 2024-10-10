@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IonicModule, PopoverController} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
 import {FilterContentComponent} from "./filter-content/filter-content.component";
@@ -21,12 +21,15 @@ export class FilterComponent  implements OnInit {
 
   @Input() filter : Filter;
 
+  @Output() filterData: EventEmitter<Filter>;
+
   public showFilter: boolean;
 
   constructor(
     private popoverController: PopoverController
   ) {
     this.showFilter = false;
+    this.filterData = new EventEmitter<Filter>();
   }
 
   ngOnInit() {
@@ -45,7 +48,9 @@ export class FilterComponent  implements OnInit {
     })
 
     popover.onDidDismiss().then( (event) => {
+      console.log(event.data);
       this.showFilter = false;
+      this.filterData.emit(event.data);
     })
 
     await popover.present();

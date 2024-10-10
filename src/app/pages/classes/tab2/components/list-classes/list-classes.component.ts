@@ -97,4 +97,9 @@ export class ListClassesComponent  implements OnInit {
     })
   }
 
+  filterData($event: Filter) {
+    this.filter = $event;
+    console.log(this.filter);
+    this.getClasses();
+  }
 }

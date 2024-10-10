@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {IonicModule, PopoverController} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
 import {Filter} from "../../../models/filter";
 import {Student} from "../../../models/student";
@@ -26,7 +26,8 @@ export class FilterContentComponent  implements OnInit {
   public student: Student[];
 
   constructor(
-    private sqliteService: SqliteManagerService
+    private sqliteService: SqliteManagerService,
+    private popoverController: PopoverController
   ) {
     this.student = [];
   }
@@ -39,7 +40,7 @@ export class FilterContentComponent  implements OnInit {
 
 
   filterData() {
-
+    this.popoverController.dismiss(this.filter);
   }
 
   reset() {

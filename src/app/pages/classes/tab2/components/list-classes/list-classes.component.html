@@ -2,7 +2,7 @@
   <ion-row>
     <ion-col *ngIf="!showForm">
 
-      <app-filter [filter]="filter">
+      <app-filter [filter]="filter" (filterData)="filterData($event)">
 
       </app-filter>
 
