@@ -71,6 +71,13 @@ export class FormClassesComponent  implements OnInit {
 
     if(this.update){
       this.sqliteService.updateClass(this.classObj).then( () => {
+
+        if (this.paid) {
+          this.payment.paid = 1;
+          this.payment.date = moment(this.payment.date).format("YYYY-MM-DDTHH:mm");
+          this.sqliteService.updatePayment(this.payment);
+        }
+
         this.alertService.alertMessage(
           this.translate.instant('label.success'),
           this.translate.instant('label.success.message.edit.class')

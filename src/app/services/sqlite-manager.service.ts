@@ -393,5 +393,31 @@ export class SqliteManagerService {
     })
   }
 
+  async updatePayment(payment: Payment){
+    let slq = 'UPDATE payment SET date?, id_class=?, id_class=?, paid=? WHERE id = ?';
+    const dbName = await this.getDbName();
+    return CapacitorSQLite.executeSet({
+      database: dbName,
+      set: [
+        {
+          statement: slq,
+          values: [
+            payment.date,
+            payment.id_class,
+            payment.paid,
+            payment.id
+          ]
+        }
+      ]
+    }).then((changes: capSQLiteChanges) => {
+      if (this.isWeb) {
+        CapacitorSQLite.saveToStore({
+          database: dbName
+        });
+      }
+      return changes;
+    })
+  }
+
 
 }
