@@ -3,7 +3,7 @@
     <ion-col *ngIf="!showForm">
 
       <!-- Filtro -->
-      <app-filter 
+      <app-filter
         [filter]="filter"
         (filterData)="filterData($event)">
       </app-filter>
@@ -11,7 +11,7 @@
       <!-- Datos -->
       <ion-row>
         <ion-col>
-          <app-list-data 
+          <app-list-data
             [data]="classes"
             emptyText="label.no.clases"
             addText="label.add.class"
@@ -23,10 +23,10 @@
               <ion-item-sliding>
                 <ion-item>
                   <ion-label class="ion-text-wrap">
-                    {{item.student?.name + ' ' + item.student?.surname}} - 
+                    {{item.student?.name + ' ' + item.student?.surname}} -
                     {{item.date_start | date: 'dd MMM yyyy HH:mm'}} -
-                    {{item.date_end | date: 'HH:mm'}} - 
-                    {{item.price + ' €'}}
+                    {{item.date_end | date: 'HH:mm'}} -
+                    {{item.price + ' $'}}
                   </ion-label>
                 </ion-item>
 
@@ -46,8 +46,8 @@
 
               </ion-item-sliding>
 
-             
-                
+
+
             </ng-template>
 
           </app-list-data>
@@ -59,7 +59,7 @@
     <ion-col *ngIf="showForm">
       <ion-row>
         <ion-col>
-          <app-form-classes 
+          <app-form-classes
             [classObj]="classSelected"
             (close)="onCloseForm()">
           </app-form-classes>
