@@ -17,6 +17,7 @@ export class SqliteManagerService {
 
   public dbReady: BehaviorSubject<boolean>;
   private isWeb: boolean;
+  private isIOS: boolean;
   private dbName: string;
 
   private DB_SETUP_KEY = 'first_db_setup';
@@ -27,6 +28,7 @@ export class SqliteManagerService {
     private http: HttpClient
   ) {
     this.isWeb = false;
+    this.isIOS = false;
     this.dbName = '';
     this.dbReady = new BehaviorSubject(false);
   }
@@ -50,6 +52,8 @@ export class SqliteManagerService {
     } else if (info.platform == 'web') {
       this.isWeb = true;
       await sqlite.initWebStore();
+    } else if(info.platform == 'ios'){
+      this.isIOS = true;
     }
 
     this.setupDatabase();
@@ -138,6 +142,9 @@ export class SqliteManagerService {
       statement: sql
     }).then((response: capSQLiteValues) => {
       let students: Student[] = [];
+      if(this.isIOS && response.values.length > 0) {
+        response.values.shift();
+      }
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         let student = row as Student;
@@ -242,9 +249,13 @@ export class SqliteManagerService {
     const dbName = await this.getDbName();
     return CapacitorSQLite.query({
       database: dbName,
-      statement: sql
+      statement: sql,
+      values: []
     }).then((response: capSQLiteValues) => {
       let classes: Class[] = [];
+      if(this.isIOS && response.values.length > 0) {
+        response.values.shift();
+      }
       for (let index = 0; index < response.values.length; index++) {
         const row = response.values[index];
         const c: Class = row as Class;
@@ -355,7 +366,8 @@ export class SqliteManagerService {
     const dbName = await this.getDbName();
     return CapacitorSQLite.query({
       database: dbName,
-      statement: sql
+      statement: sql,
+      values: []
     }).then( (response: capSQLiteValues)=> {
      let payments: Payment[] = [];
       for (let index = 0; index < response.values.length; index++) {
