@@ -6,6 +6,8 @@ import { Student } from 'src/app/models/student';
 import { AlertService } from 'src/app/services/alert.service';
 import { SqliteManagerService } from 'src/app/services/sqlite-manager.service';
 import {Payment} from "../../../../../models/payment";
+import * as moment from 'moment';
+import * as console from "console";
 
 @Component({
   selector: 'app-list-classes',
@@ -119,7 +121,20 @@ export class ListClassesComponent implements OnInit {
   }
 
   payClass(c: Class) {
-
+    this.sqliteService.getPaymentByClass(c.id).then( (payment: Payment)=> {
+      if(payment){
+        payment.date = moment().format('YYYY-MM-DDTHH:mm');
+        payment.paid = 1;
+        this.sqliteService.updatePayment(payment).then( () => {
+          this.alertService.alertMessage(
+            this.translate.instant('label.success'),
+            this.translate.instant('label.success.message.paid.class')
+          );
+          this.filter = new Filter();
+          this.getClasses();
+        }).catch(err=> console.log(err));
+      }
+    }).catch(err=> console.log(err));
   }
 
 }
