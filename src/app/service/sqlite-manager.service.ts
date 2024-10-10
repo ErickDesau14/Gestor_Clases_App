@@ -12,6 +12,7 @@ import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import {Student} from "../models/student";
 import {Class} from "../models/class";
+import {Filter} from "../models/filter";
 
 @Injectable({
   providedIn: 'root'
@@ -190,9 +191,19 @@ export class SqliteManagerService {
     })
   }
 
-  async getClasses() {
+  async getClasses(filter: Filter) {
     let sql = 'SELECT * FROM class WHERE active = 1';
-
+    if (filter) {
+      if(filter.date_start) {
+        sql += ` AND date_start >= '${filter.date_start}'`;
+      }
+      if (filter.date_end) {
+        sql += ` AND date_end <= '${filter.date_end}'`;
+      }
+      if (filter.id_student) {
+        sql += ` AND id_student = '${filter.id_student}'`;
+      }
+    }
     sql += ' ORDER BY date_start,date_end';
     const dbName = await this.getDbName();
     return CapacitorSQLite.query({

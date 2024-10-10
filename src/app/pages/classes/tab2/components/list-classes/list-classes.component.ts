@@ -36,7 +36,7 @@ export class ListClassesComponent  implements OnInit {
   getClasses() {
 
     Promise.all([
-      this.sqliteService.getClasses(),
+      this.sqliteService.getClasses(this.filter),
       this.sqliteService.getStudents()
     ]).then(results => {
       this.classes = results[0];

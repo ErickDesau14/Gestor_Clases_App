@@ -4,6 +4,7 @@ import {CommonModule} from "@angular/common";
 import {FilterContentComponent} from "./filter-content/filter-content.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {Filter} from "../../models/filter";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-filter',
@@ -34,6 +35,12 @@ export class FilterComponent  implements OnInit {
 
   ngOnInit() {
     // this.createPopover(null);
+    if (!this.filter.date_start) {
+      this.filter.date_start = moment().format("YYYY-MM-DDHH:mm");
+    }
+    if (!this.filter.date_end) {
+      this.filter.date_end = moment().format("YYYY-MM-DDHH:mm");
+    }
   }
 
   async createPopover(event: any) {
@@ -50,7 +57,9 @@ export class FilterComponent  implements OnInit {
     popover.onDidDismiss().then( (event) => {
       console.log(event.data);
       this.showFilter = false;
-      this.filterData.emit(event.data);
+      if (event.data) {
+        this.filterData.emit(event.data);
+      }
     })
 
     await popover.present();
