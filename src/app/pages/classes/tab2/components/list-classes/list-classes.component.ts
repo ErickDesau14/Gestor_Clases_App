@@ -29,7 +29,7 @@ export class ListClassesComponent implements OnInit {
     this.filter = new Filter();
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.getClasses();
   }
 
@@ -43,7 +43,7 @@ export class ListClassesComponent implements OnInit {
       let students = results[1];
       this.associateStudentsClasses(students);
       console.log(this.classes);
-      
+
     })
 
   }
@@ -101,6 +101,7 @@ export class ListClassesComponent implements OnInit {
   onCloseForm(){
     this.showForm = false;
     this.classSelected = null;
+    this.filter = new Filter();
     this.getClasses();
   }
 }
