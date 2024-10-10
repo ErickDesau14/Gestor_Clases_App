@@ -306,7 +306,7 @@ export class SqliteManagerService {
   }
 
   async getPayments() {
-    let sql = 'SELECT p.* FROM payment p, class c WHERE p.id_class = c.id c.active=1';
+    let sql = 'SELECT p.* FROM payment p, class c WHERE p.id_class = c.id AND c.active=1';
 
     sql += " ORDER BY p.date";
     const dbName = await this.getDbName();

@@ -12,6 +12,7 @@ import {Student} from "../../../../models/student";
 export class ListPaymentComponent  implements OnInit {
 
   public payments: Payment[];
+  public total: number;
 
   constructor(
     private sqliteService: SqliteManagerService
@@ -21,6 +22,7 @@ export class ListPaymentComponent  implements OnInit {
 
   ngOnInit() {
     this.getPayments();
+    this.total = 0;
   }
 
   getPayments() {
@@ -34,8 +36,14 @@ export class ListPaymentComponent  implements OnInit {
       let students = results[2];
       this.associateObjects(classes, students);
       console.log(this.payments);
+      this.calculateTotal();
+      console.log(this.total);
     })
 
+  }
+
+  calculateTotal() {
+    this.total = this.payments.reduce((acum: number, payment: Payment) => acum + payment.class.price, 0);
   }
 
   associateObjects(classes: Class[], students: Student[]) {
